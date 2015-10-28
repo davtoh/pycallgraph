@@ -31,10 +31,11 @@ class SyncronousTracer(object):
             return int(memory_usage(-1, 0)[0] * 1000000)
 
     def start(self):
+        self.old_trace = sys.gettrace() # compatibility with other traces and debuggers
         sys.settrace(self.tracer)
 
     def stop(self):
-        sys.settrace(None)
+        sys.settrace(self.old_trace) # continue from previous tracer
 
     def done(self):
         pass
